@@ -1,0 +1,19 @@
+<h2>Table Booking App</h2>
+<table border="1">
+    <tr>
+        <th>Id</th>
+        <th>Capacity</th>
+        <th>Table Number</th>
+        <th>is Booked</th>
+    </tr>
+    <tr *ngFor="let table of tables">
+        <td>{{table.id}}</td>
+        <td>{{table.capacity}}</td>
+        <td>{{table.tablenumber}}</td>
+        <td>{{table.booked? 'Booked': 'Available'}}</td>
+        <td>
+            <button *ngIf="!table.booked" (click)="bookTable(table.id)"> Book</button>
+            <button *ngIf="table.booked" (click)="cancelBooking(table.id)"> Cancel</button>
+        </td>
+    </tr>
+</table>
