@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.tablebooking.dto.RestaurantTable;
+import com.example.tablebooking.exception.ResourceNotFoundException;
 import com.example.tablebooking.repository.TableRepository;
 
 @RestController
@@ -33,12 +34,13 @@ public class TableController {
 	
 	@PostMapping("/book/{id}")
 	public ResponseEntity<Map<String,String>> bookTable(@PathVariable Long id) {
-		RestaurantTable table= repository.findById(id).orElse(null);
+		RestaurantTable table = repository.findById(id)
+				.orElseThrow(()->new ResourceNotFoundException("table not Found with table id: "+id));
 		Map<String,String> response=new HashMap<>();
-		if(table==null) {
-			response.put("message", "table not found");
-			return ResponseEntity.ok(response);
-		}
+//		if(table==null) {
+//			response.put("message", "table not found");
+//			return ResponseEntity.ok(response);
+//		}
 		if(table.isBooked()) {
 			response.put("message", "Table is already booked");
 			return ResponseEntity.ok(response);
@@ -53,12 +55,13 @@ public class TableController {
 	
 	@PostMapping("/cancel/{id}")
 	public ResponseEntity<Map<String,String>> cancelBooking(@PathVariable Long id){
-		RestaurantTable tables = repository.findById(id).orElse(null);
+		RestaurantTable tables = repository.findById(id).
+				orElseThrow(()-> new ResourceNotFoundException("Table with given Id not Found"+ id));
 		Map<String,String> response= new HashMap<>();
-		if(tables==null) {
-			response.put("message", "Table Not Found");
-			return ResponseEntity.ok(response);
-		}
+//		if(tables==null) {
+//			response.put("message", "Table Not Found");
+//			return ResponseEntity.ok(response);
+//		}
 		if(!tables.isBooked()) {
 			response.put("message", "Table Already Booked");
 			return ResponseEntity.ok(response);
