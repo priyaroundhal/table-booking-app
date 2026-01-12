@@ -31,3 +31,6 @@ build/
 
 ### VS Code ###
 .vscode/
+# Ignore frontend project
+../table-booking-app-frontend/
+
